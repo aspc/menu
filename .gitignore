@@ -2,3 +2,7 @@ cache
 rbenv
 www
 *.pyc
+bin/
+include/
+lib/python2.7/
+local/
