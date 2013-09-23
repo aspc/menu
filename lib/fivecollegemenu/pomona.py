@@ -13,6 +13,8 @@ import re
 import requests
 from urllib import quote
 
+PROJECT_ROOT = os.path.dirname(os.path.dirname(__file__))
+
 def I(x): return x
 
 def download((url, after)):
@@ -22,7 +24,11 @@ def download_helper_maybe_cache(url):
 	# if debugging, comment out this line to go faster!
 	return requests.get(url).text
 
-	cachename = "{0}.cache".format(quote(url, safe=''))
+	cachename = os.path.join(
+        PROJECT_ROOT,
+        "cache",
+        "{0}.cache".format(quote(url, safe=''))
+    )
 	try:
 		with open(cachename) as f:
 			return f.read()

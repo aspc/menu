@@ -10,15 +10,27 @@ import fivecollegemenu.scripps
 import pystache
 import sys
 import traceback
+import os.path
+import os, errno
 
-
-# cache directory?
 # current day?
 # parsers?
 # template?
 
-# TODO: Should be from env
-cache_dir = "../cache"
+PROJECT_ROOT = os.path.dirname(__file__)
+
+def ensure_dir(path):
+    """
+    Creates the directory given by path unless it already exists
+    """
+    try:
+        os.makedirs(path)
+    except OSError, e:
+        if e.errno != errno.EEXIST:
+            raise
+    return path
+
+ensure_dir(os.path.join(PROJECT_ROOT, 'cache'))
 
 search_date = (datetime.datetime.today() + datetime.timedelta(hours=4)).date()
 
@@ -66,10 +78,10 @@ def menu_as_dict((name, meals)):
 
 retrieved_menus = map(retrieve_menu, menus)
 
-with open('templates/main.css') as f:
+with open(os.path.join(PROJECT_ROOT, 'templates/main.css')) as f:
 	css = f.read().encode('utf-8')
 
-with open('templates/dining.html.mustache') as f:
+with open(os.path.join(PROJECT_ROOT, 'templates/dining.html.mustache')) as f:
 	html_template = f.read()
 
 context = {
